@@ -10,5 +10,9 @@ Instalacion Desarrollo
 
 3) Ejecutar: $source venv/bin/activate
 
-4) Ejecutar: $pip install doc/requirement.txt -R
+4) Ejecutar: $pip install -r doc/requirement.txt
+
+5) Ejecutar: $python manage.py syncdb
+
+6) Ejecutar: $python manage.py migrate
 
