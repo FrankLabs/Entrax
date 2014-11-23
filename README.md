@@ -16,3 +16,5 @@ Instalacion Desarrollo
 
 6) Ejecutar: $python manage.py migrate
 
+7) Ejecutar: $git checkout -b <nombre_del_branch_que_quieran>
+
