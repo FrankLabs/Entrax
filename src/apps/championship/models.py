@@ -38,15 +38,15 @@ class Race(models.Model):
 
 
 class LapTime(models.Model):
-	race = models.ForeignKey(Race, null=False, blank=False)
+	race = models.ForeignKey(Race)
 	rider = models.ForeignKey(ProfileRider, null=False, blank=False)
 	lap_number = models.PositiveSmallIntegerField(null=False, blank=False)
 	time = models.TimeField()
 
 
 class RaceResult(models.Model):
-	race = models.ForeignKey(Race, null=False, blank=False)
-	rider = models.ForeignKey(ProfileRider, null=False, blank=False)
+	race = models.ForeignKey(Race)
+	rider = models.ForeignKey(ProfileRider)
 	position = models.PositiveSmallIntegerField(null=False, blank=False)
 	completed_laps = models.PositiveSmallIntegerField(null=False, blank=False)
 	finished = models.BooleanField(null=False, blank=False)
