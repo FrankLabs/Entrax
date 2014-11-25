@@ -25,7 +25,10 @@ class Citie(models.Model):
 
     @property
     def country(self):
-        return self.state.country
+        try:
+            return self.state.country
+        except:
+            return None
 
     def get_location(self):
         return "%s, %s, %s" % (self.name, self.state, self.country)
