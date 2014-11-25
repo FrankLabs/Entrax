@@ -4,8 +4,8 @@ from django.db import models
 from model_utils import Choices
 from datetime import datetime
 
-from core.models import Citie
-from rider.models import ProfileRider
+from apps.core.models import Citie
+from apps.rider.models import ProfileRider
 
 DICIPLINE_CHOICES = Choices(
             (1, 'enduro', 'Enduro'),
@@ -37,6 +37,10 @@ class Organization_Club(models.Model):
     def __unicode__(self):
         return "%s" % (self.name,)
 
+    class Meta:
+        verbose_name        = 'Organization Club'
+        verbose_name_plural = 'Organization Clubs'
+
 
 class Championship(models.Model):
 
@@ -44,6 +48,10 @@ class Championship(models.Model):
 
     def __unicode__(self):
         return "%s" % (self.name,)
+
+    class Meta:
+        verbose_name        = 'Championship'
+        verbose_name_plural = 'Championships'
 
 
 class Championship_Detail(models.Model):
@@ -53,10 +61,14 @@ class Championship_Detail(models.Model):
     club = models.ManyToManyField(Organization_Club, blank=True, null=True,
                 related_name='championship')
 
-    date = models.Datetime('Championship date', datetime.date())
+    date = models.DateTimeField('Championship date', blank=True, null=True)
 
     def __unicode__(self):
         return "%s, %s" % (self.name, self.date)
+
+    class Meta:
+        verbose_name        = 'Championship Detail'
+        verbose_name_plural = 'Championship Details'
 
     def not_equal_date(self, championship, date):
         detail = Championship_Detail.objects.filter(
@@ -69,39 +81,25 @@ class Championship_Detail(models.Model):
             return True
 
 
-class Times(models.Model):
-
-    rider_level = models.ForeignKey(Level, related_name='times')
-
-    time = models.DecimalField(
-                'Times', 
-                max_digits=5, 
-                decimal_places=3, 
-                min_value = 0.01
-            )
-    """
-    Otra alternativa es hacer el min_value en el form pero no es lindo
-
-    from decimal import Decimal
-    time = forms.DecimalField(min_value = decimal.Decimal("0.01"))
-    """
-
-
 class Level(models.Model):
 
     rider = models.ForeignKey(ProfileRider, related_name='rider')
     championship = models.ForeignKey(Championship, related_name='championship')
 
-    dicipline = models.PositiveIntegerField('Dicipline'),
-                            choices=DICIPLINE_CHOICES, max_length=1)
-    category = models.PositiveIntegerField('Category'),
-                            choices=CATEGIRY_CHOICES, max_length=2)
-    rider_number = models.PositiveIntegerField('Rider number'), max_length=3)
-    result = models.PositiveIntegerField('Result'), max_length=2)
+    dicipline = models.PositiveIntegerField('Dicipline',
+                    choices=DICIPLINE_CHOICES, max_length=1)
+    category = models.PositiveIntegerField('Category',
+                    choices=CATEGIRY_CHOICES, max_length=2)
+    rider_number = models.PositiveIntegerField('Rider number', max_length=3)
+    result = models.PositiveIntegerField('Result', max_length=2)
     comment = models.TextField('Comment', blank=True)
 
     def __unicode__(self):
         return "%s, %s" % (self.championship, self.rider,)
+
+    class Meta:
+        verbose_name        = 'Level'
+        verbose_name_plural = 'Levels'
 
     def is_unique(self, rider, championship):
         level = Level.objects.filter(
@@ -129,3 +127,31 @@ class Level(models.Model):
         level_time = level.total_time()
         time = abs(my_time - level_time)
         return time
+
+
+class Times(models.Model):
+
+    rider_level = models.ForeignKey(Level, related_name='times')
+
+    time = models.DecimalField(
+                'Times', 
+                max_digits=5, 
+                decimal_places=3
+            )
+
+    class Meta:
+        verbose_name        = 'Times'
+        verbose_name_plural = 'Times'
+    """
+    Otra alternativa es hacer el min_value en el form pero no es lindo
+
+    time = models.DecimalField(
+                'Times', 
+                max_digits=5, 
+                decimal_places=3, 
+                min_value = 0.01
+            )
+
+    from decimal import Decimal
+    time = forms.DecimalField(min_value = decimal.Decimal("0.01"))
+    """
