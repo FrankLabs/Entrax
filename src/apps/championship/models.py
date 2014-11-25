@@ -71,10 +71,20 @@ class Championship_Detail(models.Model):
 
 class Times(models.Model):
 
-    rider_level = models.ForeignKey(Level, related_name='level')
+    rider_level = models.ForeignKey(Level, related_name='times')
 
-    time = models.DecimalField('Times', 
-                max_digits=5, decimal_places=3, default=0)
+    time = models.DecimalField(
+                'Times', 
+                max_digits=5, 
+                decimal_places=3, 
+                min_value = 0.01
+            )
+    """
+    Otra alternativa es hacer el min_value en el form pero no es lindo
+
+    from decimal import Decimal
+    time = forms.DecimalField(min_value = decimal.Decimal("0.01"))
+    """
 
 
 class Level(models.Model):
@@ -88,6 +98,7 @@ class Level(models.Model):
                             choices=CATEGIRY_CHOICES, max_length=2)
     rider_number = models.PositiveIntegerField('Rider number'), max_length=3)
     result = models.PositiveIntegerField('Result'), max_length=2)
+    comment = models.TextField('Comment', blank=True)
 
     def __unicode__(self):
         return "%s, %s" % (self.championship, self.rider,)
@@ -102,3 +113,19 @@ class Level(models.Model):
         else:
             return True
 
+    def get_times(self):
+        if self.times.exists():
+            return self.times.time
+
+    def total_time(self):
+        times = self.get_times()
+        time = 0
+        for elem in times:
+            time = time + elem
+        return time
+
+    def difference(self, level):
+        my_time = self.total_time()
+        level_time = level.total_time()
+        time = abs(my_time - level_time)
+        return time
