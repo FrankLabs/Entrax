@@ -1,3 +1,10 @@
 from django.contrib import admin
+from apps.motorbike.models import Motorbike
 
-# Register your models here.
+
+class MotorbikeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'brand', 'rider')
+    search_fields = ('name',)
+
+
+admin.site.register(Motorbike, MotorbikeAdmin)
