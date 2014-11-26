@@ -84,7 +84,10 @@ class Championship_Detail(models.Model):
 class Level(models.Model):
 
     rider = models.ForeignKey(ProfileRider, related_name='rider')
-    championship = models.ForeignKey(Championship, related_name='championship')
+    championship = models.ForeignKey(
+                        Championship_Detail, 
+                        related_name='championship'
+                    )
 
     dicipline = models.PositiveIntegerField('Dicipline',
                     choices=DICIPLINE_CHOICES, max_length=1)
@@ -101,15 +104,17 @@ class Level(models.Model):
         verbose_name        = 'Level'
         verbose_name_plural = 'Levels'
 
-    def is_unique(self, rider, championship):
+    def is_unique(self, championship, dicipline, category, rider_number):
         level = Level.objects.filter(
-                    rider = rider, 
-                    championship = championship
+                    championship = championship,
+                    dicipline = dicipline, 
+                    category = category,
+                    rider_number = rider_number
                 )
-        if len(level) != 0:
-            return False
-        else:
+        if len(level) == 0:
             return True
+        else:
+            return False
 
     def get_times(self):
         if self.times.exists():
