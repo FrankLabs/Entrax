@@ -13,7 +13,7 @@ class Team(models.Model):
 
 class ProfileRider(models.Model):
     user = models.ForeignKey(User)
-    birthday = models.DateField(null=True, blank=True)
+    birthday = models.DateField()
     location = models.ForeignKey(Citie, null=True, blank=True)
     team = models.ForeignKey(Team, null=True, blank=True)
 
