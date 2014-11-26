@@ -38,18 +38,20 @@ class Statistic(models.Model):
     championship = models.ForeignKey(ChampionshipDetail)
     rider = models.ForeignKey(ProfileRider)
     result = models.PositiveIntegerField(null=True, blank=True)
-    laps = models.PositiveIntegerField(null=True, blank=True)
-    lap1 = models.TimeField(null=True, blank=True)
-    lap2 = models.TimeField(null=True, blank=True)
-    lap3 = models.TimeField(null=True, blank=True)
-    lap4 = models.TimeField(null=True, blank=True)
-    lap5 = models.TimeField(null=True, blank=True)
-    lap6 = models.TimeField(null=True, blank=True)
-    lap7 = models.TimeField(null=True, blank=True)
-    lap8 = models.TimeField(null=True, blank=True)
-    lap9 = models.TimeField(null=True, blank=True)
-    lap10 = models.TimeField(null=True, blank=True)
     time = models.TimeField(null=True, blank=True)
+    laps = models.PositiveIntegerField(null=True, blank=True)
+    dif_1 = models.TimeField(null=True, blank=True)
+    dif_ante = models.TimeField(null=True, blank=True)
+    comment = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
         return "%s" % (self.category,)
+
+
+class Lap(models.Model):
+    number = models.PositiveInteger(null=True, blank=True)
+    lap = models.TimeField(null=True, blank=True)
+    statistic = models.ForeignKey(Statistic)
+
+    def __unicode__(self):
+        return "%s" % (self.number,)
