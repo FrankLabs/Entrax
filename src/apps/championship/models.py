@@ -122,41 +122,46 @@ class Level(models.Model):
 
     def total_time(self):
         times = self.get_times()
-        time = 0
+        hour = 0
+        minute = 0
+        second = 0
+        microsecond = 0
         for elem in times:
-            time = time + elem
-        return time
+            hour = hour + elem.hour
+            minute = minute + elem.minute
+            second = second + elem.second
+            microsecond = microsecond + elem.microsecond
+        return datetime.time(hour, minute, second, microsecond)
 
-    def difference(self, level):
+    def difference(self, other):
         my_time = self.total_time()
-        level_time = level.total_time()
-        time = abs(my_time - level_time)
-        return time
+        other_time = other.total_time()
+
+        t1_ms = (my_time.hour*3600 + my_time.minute*60 + my_time.second)*1000\
+                    + my_time.microsecond
+        t2_ms = (other_time.hour*3600 + other_time.minute*60 + \
+                    other_time.second)*1000 + other_time.microsecond
+        time = abs(t1_ms - t2_ms)
+
+        hour = time / (3600*1000)
+        time = time % (3600*1000)
+
+        minute = time / (60*1000)
+        time = time % (60*1000)
+
+        second = time / 1000
+        time = time % 1000
+
+        microsecond = time
+        return datetime.time(hour, minute, second, microsecond)
 
 
 class Times(models.Model):
 
     rider_level = models.ForeignKey(Level, related_name='times')
 
-    time = models.DecimalField(
-                'Times', 
-                max_digits=5, 
-                decimal_places=3
-            )
+    time = models.TimeField('Times', null=True, blank=True)
 
     class Meta:
         verbose_name        = 'Times'
         verbose_name_plural = 'Times'
-    """
-    Otra alternativa es hacer el min_value en el form pero no es lindo
-
-    time = models.DecimalField(
-                'Times', 
-                max_digits=5, 
-                decimal_places=3, 
-                min_value = 0.01
-            )
-
-    from decimal import Decimal
-    time = forms.DecimalField(min_value = decimal.Decimal("0.01"))
-    """
