@@ -41,7 +41,7 @@ class Statistic(models.Model):
     time = models.TimeField(null=True, blank=True)
     laps = models.PositiveIntegerField(null=True, blank=True)
     dif_1 = models.TimeField(null=True, blank=True)
-    dif_ante = models.TimeField(null=True, blank=True)
+    dif_last = models.TimeField(null=True, blank=True)
     comment = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
@@ -50,7 +50,7 @@ class Statistic(models.Model):
 
 class Lap(models.Model):
     number = models.PositiveInteger(null=True, blank=True)
-    lap = models.TimeField(null=True, blank=True)
+    time = models.TimeField(null=True, blank=True)
     statistic = models.ForeignKey(Statistic)
 
     def __unicode__(self):
