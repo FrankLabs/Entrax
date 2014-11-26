@@ -4,6 +4,8 @@ from apps.core.models import Citie
 from apps.rider.models import ProfileRider
 from datetime import datetime
 
+FIRST = 1
+
 
 class Club(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
@@ -38,14 +40,27 @@ class Statistic(models.Model):
     championship = models.ForeignKey(ChampionshipDetail)
     rider = models.ForeignKey(ProfileRider)
     result = models.PositiveIntegerField(null=True, blank=True)
-    time = models.TimeField(null=True, blank=True)
-    laps = models.PositiveIntegerField(null=True, blank=True)
-    dif_1 = models.TimeField(null=True, blank=True)
-    dif_last = models.TimeField(null=True, blank=True)
+    total_time = models.TimeField(null=True, blank=True)
+    total_laps = models.PositiveIntegerField(null=True, blank=True)
     comment = models.TextField(null=True, blank=True)
 
     def __unicode__(self):
         return "%s" % (self.category,)
+
+    def diff_1(self):
+        winner_stats = Statistic.objects.get(championship=self.championship,
+                                             result=FIRST)
+        return winner_stats.total_time - self.total_time
+
+    def diff_prev(self):
+        if self.result != FIRST:
+            prev_statistic = Statistic.objects.get(
+                championship=self.championship,
+                result=self.result - 1)
+            result = prev_statistic.total_time - self.total_time
+        else:
+            result = datetime.min.time()
+        return result
 
 
 class Lap(models.Model):
