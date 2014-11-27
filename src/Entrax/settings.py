@@ -86,3 +86,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_PROFILE_MODULE = 'rider.ProfileRider'
+
+TEMPLATE_DIRS = [
+    os.path.join(BASE_DIR, "../templates/"),
+    os.path.join(BASE_DIR, "./templates/"),
+]
