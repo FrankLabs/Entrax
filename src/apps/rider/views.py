@@ -1,6 +1,4 @@
-from django.shortcuts import render_to_response, render
-from django.template import RequestContext
-from django.template.response import TemplateResponse
+from django.shortcuts import render
 
 from apps.rider.forms import NewRiderForm
 

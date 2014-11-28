@@ -8,4 +8,8 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^rider/', include('apps.rider.urls', namespace="rider")),
+    url(r'^championship/', include(
+        'apps.championship.urls',
+        namespace="championship"
+    ))
 )
