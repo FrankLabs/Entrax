@@ -37,7 +37,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.core',
-    'apps.rider'
+    'apps.rider',
+    'apps.championship',
+    'apps.motorbike',
 )
 
 MIDDLEWARE_CLASSES = (
