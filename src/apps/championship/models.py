@@ -4,12 +4,12 @@ from django.contrib.auth.models import User
 from datetime import datetime
 from apps.core.models import Citie
 from apps.rider.models import Team
-from apps.motorobike.models import Motorbike
+from apps.motorbike.models import Motorbike
 
 
 DISCIPLINE_CHOICES = (
     (1, 'Enduro'),
-    (2, 'Palangana')
+    (2, 'Cross'),
 )
 
 
@@ -74,6 +74,7 @@ class ChampionshipInscription(models.Model):
     team = models.ForeignKey(Team, null=True, blank=True)
     total_time = models.TimeField(null=True, blank=True)
     dif_time = models.TimeField(null=True, blank=True)
+    penal_time = models.TimeField(null=True, blank=True)
 
     def __unicode__(self):
         return "%s - %s" % (self.championship, self.rider)
