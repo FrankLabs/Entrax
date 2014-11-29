@@ -39,8 +39,7 @@ INSTALLED_APPS = (
     'apps.core',
     'apps.rider',
     'apps.championship',
-    'apps.motorbike',
-)
+    'apps.motorbike'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

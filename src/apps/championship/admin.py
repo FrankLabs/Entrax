@@ -1,23 +1,14 @@
 from django.contrib import admin
-from apps.championship.models import Club, ChampionshipDetail, Statistic
+from apps.championship.models import (
+        Organizer, Category, Championship,
+        ChampionshipCategory, ChampionshipInscription,
+        InscriptionLaps
+    )
 
 
-class ClubAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
-
-
-class ChampionshipAdmin(admin.ModelAdmin):
-    list_display = ('name', 'discipline', 'club_organizer', 'location', 'date')
-    search_fields = ('name',)
-
-
-class StatisticAdmin(admin.ModelAdmin):
-    list_display = ('category', 'championship', 'rider',
-                    'result', 'laps', 'time')
-    search_fields = ('category',)
-
-
-admin.site.register(Club, ClubAdmin)
-admin.site.register(ChampionshipDetail, ChampionshipAdmin)
-admin.site.register(Statistic, StatisticAdmin)
+admin.site.register(Organizer)
+admin.site.register(Category)
+admin.site.register(Championship)
+admin.site.register(ChampionshipCategory)
+admin.site.register(ChampionshipInscription)
+admin.site.register(InscriptionLaps)
