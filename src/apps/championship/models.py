@@ -1,72 +1,90 @@
+# -*- coding: utf-8 -*-
 from django.db import models
-
-from apps.core.models import Citie
-from apps.rider.models import ProfileRider
+from django.contrib.auth.models import User
 from datetime import datetime
+from apps.core.models import Citie
+from apps.rider.models import Team
+from apps.motorobike.models import Motorbike
 
-FIRST = 1
+
+DISCIPLINE_CHOICES = (
+    (1, 'Enduro'),
+)
 
 
-class Club(models.Model):
-    name = models.CharField(max_length=100, null=True, blank=True)
+class Organizer(models.Model):
+    name = models.CharField('Name', max_length=200)
+
+    def __unicode__(self):
+        return "%s" % (self.name,)
+
+
+class Category(models.Model):
+    name = models.CharField('Name', max_length=200)
 
     def __unicode__(self):
         return "%s" % (self.name,)
 
 
-class ChampionshipDetail(models.Model):
-    discipline = models.CharField(max_length=100)
-    name = models.CharField(max_length=100)
-    club_organizer = models.ForeignKey(Club, null=True, blank=True)
-    location = models.ForeignKey(Citie, null=True, blank=True)
-    date = models.DateField(null=True, blank=True)
+class Championship(models.Model):
+    discipline = models.IntegerField(
+        'Discipline', choices=DISCIPLINE_CHOICES, blank=True, null=True
+    )
+    name = models.CharField('Name', max_length=200)
+    description = models.TextField('Description', max_length=3000)
+    place = models.ForeignKey(Citie, blank=True, null=True)
+    organizer = models.ManyToManyField(
+        Organizer, blank=True, null=True,
+    )
+    start_date = models.DateTimeField(
+        'Start championship date', blank=True, null=True
+    )
+    finish_date = models.DateTimeField(
+        'Finish championship date', blank=True, null=True
+    )
+    create_date = models.DateTimeField('Create date', default=datetime.now())
+    modified_date = models.DateTimeField('Modified date', auto_now=True)
 
     def __unicode__(self):
         return "%s" % (self.name,)
 
-    def month(self):
-        return self.date.month
-
-    def year(self):
-        return self.date.year
-
-    def set_date(self, day, month, year):
-        self.date = datetime(year, month, day).date()
-        self.save()
+    def get_category(self):
+        return ChampionshipCategory.objects.filter(championship=self)
 
 
-class Statistic(models.Model):
-    category = models.CharField(max_length=100)
-    championship = models.ForeignKey(ChampionshipDetail)
-    rider = models.ForeignKey(ProfileRider)
-    result = models.PositiveIntegerField(null=True, blank=True)
+class ChampionshipCategory(models.Model):
+    championship = models.ForeignKey(Championship)
+    categoty = models.ForeignKey(Category)
+    number_laps = models.PositiveIntegerField(max_length=3, default=0)
+
+    def __unicode__(self):
+        return "%s - %s" % (self.championship, self.categoty)
+
+    def get_inscription(self):
+        return ChampionshipInscription.objects.filter(championship=self)
+
+
+class ChampionshipInscription(models.Model):
+    championship = models.ForeignKey(ChampionshipCategory)
+    number = models.PositiveIntegerField(max_length=3, default=0)
+    position = models.PositiveIntegerField(max_length=3, default=0)
+    rider = models.ForeignKey(User)
+    motorobike = models.ForeignKey(Motorbike, null=True, blank=True)
+    team = models.ForeignKey(Team, null=True, blank=True)
     total_time = models.TimeField(null=True, blank=True)
-    total_laps = models.PositiveIntegerField(null=True, blank=True)
-    comment = models.TextField(null=True, blank=True)
+    dif_time = models.TimeField(null=True, blank=True)
 
     def __unicode__(self):
-        return "%s" % (self.category,)
+        return "%s - %s" % (self.championship, self.rider)
 
-    def diff_1(self):
-        winner_stats = Statistic.objects.get(championship=self.championship,
-                                             result=FIRST)
-        return winner_stats.total_time - self.total_time
-
-    def diff_prev(self):
-        if self.result != FIRST:
-            prev_statistic = Statistic.objects.get(
-                championship=self.championship,
-                result=self.result - 1)
-            result = prev_statistic.total_time - self.total_time
-        else:
-            result = datetime.min.time()
-        return result
+    def get_total_laps(self):
+        return InscriptionLaps.objects.filter(inscription=self)
 
 
-class Lap(models.Model):
-    number = models.PositiveInteger(null=True, blank=True)
+class InscriptionLaps(models.Model):
+    inscription = models.ForeignKey(ChampionshipInscription)
+    number_lap = models.PositiveIntegerField(max_length=3, default=0)
     time = models.TimeField(null=True, blank=True)
-    statistic = models.ForeignKey(Statistic)
 
     def __unicode__(self):
-        return "%s" % (self.number,)
+        return "%s - Lap: %s" % (self.inscription, self.number_lap)
