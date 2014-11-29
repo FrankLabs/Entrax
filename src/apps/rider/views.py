@@ -1,16 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render_to_response, RequestContext
+from apps.rider.forms import ProfileRiderForm
 
-from apps.rider.forms import NewRiderForm
 
-def new_rider(request):
+def prueba(request):
+    form = ProfileRiderForm()
     if request.method == 'POST':
-        # Si se ingresaron datos
-        form = NewRiderForm(request.POST)
+        form = ProfileRiderForm(request.POST)
         if form.is_valid():
-            # Si los datos son correctos se guardan en la base de datos
-            form.save(commit=True)
-        return render(request, 'new_rider.html', {'form': form,})
-    else:
-        # Si hay un GET se muestra el formulario
-        form = NewRiderForm()
-        return render(request, 'new_rider.html', {'form': form,})
+            form.save()
+    return render_to_response(
+        'prueba.html',
+        RequestContext(
+            request,
+            {
+                'form': form
+            }
+        ),
+    )

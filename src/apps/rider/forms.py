@@ -1,12 +1,18 @@
-# -*- coding: UTF-8 -*-
-from django.forms import ModelForm
-from django import forms
-
+# -*- coding: utf-8 *-*
+from django.forms import ModelForm, TextInput
 from apps.rider.models import ProfileRider
 
-class NewRiderForm(ModelForm):
+
+class ProfileRiderForm(ModelForm):
     class Meta:
         model = ProfileRider
+
+        fields = {
+            'user', 'birthday', 'location', 'team'
+        }
+
         widgets = {
-            'birthday': forms.DateInput(attrs={'placeholder':'aaaa-mm-dd'}),
+            'birthday': TextInput(
+                attrs={'class': 'input_text'}
+            ),
         }
