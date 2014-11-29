@@ -9,6 +9,7 @@ from apps.motorobike.models import Motorbike
 
 DISCIPLINE_CHOICES = (
     (1, 'Enduro'),
+    (2, 'Trial')
 )
 
 
