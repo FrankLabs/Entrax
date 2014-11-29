@@ -13,7 +13,7 @@ class State(models.Model):
     country = models.ForeignKey(Country, blank=True, null=True)
 
     def __unicode__(self):
-        return "%s" % (self.name,)
+        return "%s" % (self.name)
 
 
 class Citie(models.Model):
