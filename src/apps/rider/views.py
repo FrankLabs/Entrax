@@ -1,3 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render_to_response, RequestContext
+from apps.rider.forms import ProfileRiderForm
 
-# Create your views here.
+
+def prueba(request):
+    form = ProfileRiderForm()
+    if request.method == 'POST':
+        form = ProfileRiderForm(request.POST)
+        if form.is_valid():
+            form.save()
+    return render_to_response(
+        'prueba.html',
+        RequestContext(
+            request,
+            {
+                'form': form
+            }
+        ),
+    )
