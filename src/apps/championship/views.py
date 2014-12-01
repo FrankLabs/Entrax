@@ -23,6 +23,7 @@ def championship_list(request, discipline_parametro=None):
     resultado = '<table border="1">'
     resultado += '<thead>'
     resultado += '<tr>'
+    aaaaaaaaaaaaaaa
     resultado += '<td>Disciplina</td>'
     resultado += '<td>Nombre</td>'
     resultado += '<td>Lugar</td>'
