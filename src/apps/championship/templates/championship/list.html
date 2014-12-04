@@ -1,0 +1,30 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<div id="content-outer">        
+    
+<!-- CAROUSEL  -->   
+    <div class="row">
+        <div class="col-md-12">
+<table class="table">
+    <thead>
+        <tr>
+            <td>Disciplina</td>
+            <td>Nombre</td>
+            <td>Lugar</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for x in list %}
+        <tr>
+            <td>{{ x.get_discipline_display }}</td>
+            <td>{{ x }}</td>
+            <td>{{ x.place.name }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+</div>
+</div>
+{% endblock %}

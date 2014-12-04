@@ -1,4 +1,5 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render_to_response, HttpResponse
+from django.template import RequestContext
 from apps.championship.models import Championship, DISCIPLINE_CHOICES
 
 
@@ -20,35 +21,12 @@ def championship_list(request, discipline_parametro=None):
         championship_lst = championship_lst.filter(
             discipline=discipline_parametro
         )
-    resultado = '<table border="1">'
-    resultado += '<thead>'
-    resultado += '<tr>'
-    resultado += '<td>Disciplina</td>'
-    resultado += '<td>Nombre</td>'
-    resultado += '<td>Lugar</td>'
-    resultado += '</tr>'
-    resultado += '</thead>'
-    resultado += '<tbody>'
-    for item in championship_lst:
-        resultado += '<tr>'
-        resultado += '<td>'
-        resultado += str(item.get_discipline_display())
-        resultado += '</td>'
-        resultado += '<td>'
-        resultado += item.name
-        resultado += '</td>'
-        resultado += '<td>'
-        resultado += item.place.name
-        resultado += '</td>'
-        resultado += '</tr>'
-    resultado += '</tbody>'
-    resultado += '</table><br>'
-    resultado += '<h2>Filtos:</h2>'
-    for x in DISCIPLINE_CHOICES:
-        resultado += '<p><a href="/championship_list/'
-        resultado += str(x[0])
-        resultado += '/">'
-        resultado += str(x[1])
-        resultado += '</a></p>'
-    resultado += '<p><a href="/championship_list/">All</a>'
-    return HttpResponse(resultado)
+    return render_to_response(
+        'championship/list.html',
+        RequestContext(
+            request,
+            {
+                'list': championship_lst,
+            }
+        )
+    )
