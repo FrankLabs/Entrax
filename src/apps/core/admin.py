@@ -2,9 +2,15 @@ from django.contrib import admin
 from apps.core.models import Country, State, Citie
 
 
+class Country_InLine(admin.TabularInline):
+    model = State
+    extra = 0
+
+
 class CountryAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
+    inlines = [Country_InLine]
 
 
 class StateAdmin(admin.ModelAdmin):
