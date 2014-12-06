@@ -27,6 +27,8 @@ def championship_list(request, discipline_parametro=None):
             request,
             {
                 'list': championship_lst,
+                'discipline': DISCIPLINE_CHOICES,
+                'discipline_parametro': discipline_parametro
             }
         )
     )

@@ -1,9 +1,16 @@
 {% extends 'base.html'%}
 
 {% block content %}
-<div id="content-outer">        
-    
-<!-- CAROUSEL  -->   
+<div id="content-outer">
+    <div class="row">
+        <div class="col-md-3">
+            <select id="select_dis" class="form-control">
+                <option value="0">---------</option>
+                {% for item in discipline%}
+                <option value="{{ item.0 }}">{{item.1}}</option>
+                {% endfor %}
+            </select>
+        </div>
     <div class="row">
         <div class="col-md-12">
 <table class="table">
@@ -27,4 +34,15 @@
 </div>
 </div>
 </div>
+<script type="text/javascript">
+    $('#select_dis').change(function(){
+        if ($(this).val() != '0'){
+          location.href= '/championship_list/' + $(this).val() + '/'    
+        }else{
+            alert('0 no es un valor permitido, por lo que se mostrara la lista sin filtrar')
+            location.href= '/championship_list/'
+        }
+    })
+    $('#select_dis').val('{{discipline_parametro}}')
+</script>
 {% endblock %}
