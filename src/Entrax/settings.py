@@ -24,7 +24,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -97,3 +97,9 @@ TEMPLATE_DIRS = [
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
+
+LOGIN_URL = '/login/'
+
+LOGOUT_URL = '/logout/'
+
+LOGIN_REDIRECT_URL = '/'

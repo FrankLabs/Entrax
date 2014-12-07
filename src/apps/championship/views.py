@@ -1,6 +1,7 @@
 from django.shortcuts import render_to_response, HttpResponse
 from django.template import RequestContext
 from apps.championship.models import Championship, DISCIPLINE_CHOICES
+from django.contrib.auth.decorators import login_required
 
 
 def hola_mundo(request, nombre=None):
@@ -15,6 +16,7 @@ def hola_mundo(request, nombre=None):
     return HttpResponse(respuesta)
 
 
+@login_required
 def championship_list(request, discipline_parametro=None):
     championship_lst = Championship.objects.all()
     if discipline_parametro is not None:
