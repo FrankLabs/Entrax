@@ -1,10 +1,53 @@
+{% extends 'base.html'%}
+
+{% block content %}
 <style type="text/css">
     .input_text{
         background-color: yellow
     }
 </style>
-<form id='formulario' method='POST' action='.'>
-{% csrf_token %}
-{{ form }}
-<button type="submit">aceptar</button>
-</form>
+<div id="content-outer">
+    <div class="row">
+        <div class="col-md-8">
+            <form name='formulario' method='POST' action='.'>
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <label for='id_country'>
+                    Country: 
+                        <select id="country" class="form-control" 
+                                onChange="javascript: agregarEstados(this.form)">
+                            <option value="">---------</option>
+                            {% for item in country_lst%}
+                                <option value="{{ item.id }}">{{item}}</option>
+                            {% endfor %}
+                        </select>
+                </label>
+                <label for='id_state'>
+                    State: 
+                        <select id="state" class="form-control"
+                                    onChange="javascript: agregarCiudades(this.form)">
+                            <option value="">---------</option>
+                            {% for item in state_lst %}
+                                <option value="{{ item.id }}">{{item}}</option>
+                            {% endfor %}
+                        </select>
+                </label>
+                <label for='id_citie'>
+                    Citie: 
+                        <select id="citie" class="form-control">
+                            <option value="">---------</option>
+                            {% for item in citie_lst %}
+                                <option value="{{ item.id }}">{{item}}</option>
+                            {% endfor %}
+                        </select>
+                </label>
+                <br><br>
+
+                <button type="submit">aceptar</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
