@@ -12,7 +12,16 @@ urlpatterns = patterns('',
     ),
     url(r'^signup/$', 'apps.core.views.sign_up'),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^prueba/', 'apps.rider.views.prueba'),
+
+    url(r'^prueba/$', 'apps.rider.views.prueba'),
+    url(r'^prueba/(?P<country>\d+)/$', 'apps.rider.views.prueba'),
+    url(
+        r'^prueba/(?P<country>\d+)/(?P<state>\d+)/$', 
+        'apps.rider.views.prueba'),
+    url(
+        r'^prueba/(?P<country>\d+)/(?P<state>\d+)/(?P<citie>\d+)', 
+        'apps.rider.views.prueba'),
+
     url(
         r'^hola_mundo/$',
         'apps.championship.views.hola_mundo'
@@ -21,6 +30,7 @@ urlpatterns = patterns('',
         r'^saludo/(?P<nombre>[a-zA-Z@.-_]+)/',
         'apps.championship.views.hola_mundo'
     ),
+    
     url(
         r'^championship_list/$',
         'apps.championship.views.championship_list'
