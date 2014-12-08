@@ -1,0 +1,10 @@
+<style type="text/css">
+    .input_text{
+        background-color: yellow
+    }
+</style>
+<form id='formulario' method='POST' action='.'>
+{% csrf_token %}
+{{ form }}
+<button type="submit">aceptar</button>
+</form>
