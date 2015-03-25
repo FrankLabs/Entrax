@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div id="content-outer">
 <form method='post' action='.'>
     {% csrf_token %}<br><br><br>
         <div class="row">
@@ -21,5 +22,6 @@
                 <button type="submit" class="btn btn-primary pull-right">aceptar</button>
             </div>
         </div>
-</form>
+</form><br><br>
+</div>
 {% endblock %}
